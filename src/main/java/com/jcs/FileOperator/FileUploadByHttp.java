@@ -76,7 +76,7 @@ public class FileUploadByHttp {
 	 * @throws MalformedURLException
 	 */
 	public int sendFile(File file, String[] param, String[] value) throws MalformedURLException, IOException {
-		URLConnection connection = new URL(fileUtils.getUrlPath()).openConnection();
+		URLConnection connection = new URL(fileUtils.getUrlUploadPath()).openConnection();
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 		OutputStream output = connection.getOutputStream();

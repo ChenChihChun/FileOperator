@@ -1,20 +1,36 @@
 package com.jcs.FileOperator;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
+import javax.crypto.SecretKey;
 
 import com.jcs.FileOperator.FileUploadByHttp;
+import com.jcs.util.JCSEncrypt;
 
-public class Test {
+public class TestUpload {
 
 	//folder complete copy to server 
-	public static void  main (String[] args) {
+	public static void  main (String[] args) throws Exception {
 		try {
 			FileUploadByHttp test = new FileUploadByHttp();
 
+			JCSEncrypt encrypt = new JCSEncrypt();
+			SecretKey secretKey = encrypt.secretKeyGenerator();
+			byte[] iv = encrypt.ivGenerator();
+			String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+			String base64iv = Base64.getEncoder().encodeToString(iv);
+			String base64EncodeData = encrypt.encryptData(secretKey, iv);
+			
 			for(File file : new File("C:\\wildfly-10.1.0.Final\\docs\\licenses").listFiles()) {
 				String parentFolder = file.getParent();
-				String[] param = new String[] {"ac","pd","uploadPath"};
-				String[] value = new String[] {"jcs","jcsRU*T?^",parentFolder.substring(3,parentFolder.length())};
+				String uploadPath = Base64.getEncoder().encodeToString(
+						parentFolder.substring(3,parentFolder.length()).getBytes("UTF-8"));
+				String[] param = new String[] {"encodedKey","base64EncodeData","base64iv","uploadPath"};
+				String[] value = new String[] {encodedKey,base64EncodeData,base64iv,uploadPath};
 				
 				switch (test.sendFile(file, param, value)) {
 					default:

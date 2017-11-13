@@ -7,10 +7,26 @@ import java.util.Properties;
 
 public class JCSFileUtils {
 
-	private String urlPath = "";
+	private String urlUploadPath = "";
+	private String urlDownloadPath ="";
+	private String dbPassword = "";
+	private String dbAccount = "";
+	private String dbUrl = "";
 	
-	public String getUrlPath() {
-		return this.urlPath;
+	public String getUrlUploadPath() {
+		return this.urlUploadPath;
+	}
+	public String getUrlDownloadPath() {
+		return this.urlDownloadPath;
+	}
+	public String getDbPassword() {
+		return this.dbPassword;
+	}
+	public String getDbAccount() {
+		return this.dbAccount;
+	}
+	public String getDbUrl() {
+		return this.dbUrl;
 	}
 	
 	public static boolean isTextFile(File file) {
@@ -26,7 +42,11 @@ public class JCSFileUtils {
 		}
 		//load a properties file from class path, inside static method
 		prop.load(input);
-		this.urlPath = prop.getProperty("urlPath");
+		this.urlUploadPath = prop.getProperty("urlUploadPath");
+		this.urlDownloadPath = prop.getProperty("urlDownloadPath");
+		this.dbAccount = prop.getProperty("dbAccount");
+		this.dbPassword = prop.getProperty("dbPassword");
+		this.dbUrl =  prop.getProperty("dbUrl");
 	}
 
 }
